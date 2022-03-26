@@ -12,8 +12,10 @@ function game(nums) {
   giveHint(compareResultArr); //사용자에게 라운드 결과(힌트) 제공
   checkStrike = checkThreeStrike(compareResultArr); //쓰리 스트라이크 여부 확인
   checkEnd = checkGame(comNums, checkStrike); //게임 결과에 따라 종료 또는 재시작
-
-  console.log(comNums, userNums, compareResultArr, checkStrike);
+  //게임 종료 시 새로 시작 여부 묻기
+  if (checkEnd) {
+    answerRestart();
+  }
 }
 
 //1~9 난수 생성 함수
@@ -134,4 +136,14 @@ function checkGame(comNums, checkResult) {
     alert("3개의 숫자를 모두 맞히셨습니다! 게임 종료");
     return true;
   } else game(comNums); //재시작 시 기존 컴퓨터 숫자 가지고 시작
+}
+
+//새로 시작 여부 묻는 함수
+function answerRestart() {
+  let input;
+
+  input = prompt("게임을 새로 시작하려면 1, 종료하려면 2를 입력하세요.");
+  if (input === "1") {
+    game();
+  }
 }
