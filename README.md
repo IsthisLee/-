@@ -1,5 +1,7 @@
 # Number Baseball
 
+[⚾️ 야구 게임 페이지 바로가기 ⚾️](https://isthislee.github.io/Number-Baseball/)
+
 ## 구현할 기능 목록
 
 - 게임 시작 버튼 클릭 시 게임 시작
