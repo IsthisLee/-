@@ -1,9 +1,11 @@
 //게임 함수
 function game() {
-  let randNum = getRandNum(); // 난수 생성
-  let randNums = getComNums(randNum); //컴퓨터의 3자리 숫자 생성
+  let randNum, randNums, userNums;
+  randNum = getRandNum(); // 난수 생성
+  randNums = getComNums(randNum); //컴퓨터의 3자리 숫자 생성
+  userNums = getUserNums(); //사용자의 3자리 숫자 받기
 
-  console.log(randNums);
+  console.log(randNums, userNums);
 }
 
 //1~9 난수 생성 함수
@@ -30,4 +32,17 @@ function getComNums(num) {
   comNums = comNumArr.join("");
   console.log("상대방(컴퓨터)의 숫자 : ", comNums, typeof comNums);
   return comNums;
+}
+
+//사용자에게 3자리 숫자 받는 함수
+function getUserNums() {
+  let userNums; //사용자의 숫자
+
+  do {
+    userNums = prompt("숫자를 입력해주세요");
+    if (userNums === null) return userNums; //사용자가 입력 창 취소 시 null 들어옴.
+    if (userNums.length !== 3) alert("3자리 숫자를 입력해주세요!");
+  } while (userNums.length !== 3);
+  console.log("사용자의 숫자 : ", userNums, typeof userNums);
+  return userNums;
 }
