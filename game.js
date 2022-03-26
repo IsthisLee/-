@@ -8,6 +8,7 @@ function game(nums) {
     comNums = getComNums(randNum); //컴퓨터의 3자리 숫자 생성
   } else comNums = nums; // 첫 라운드가 아닌 경우 기존 숫자
   userNums = getUserNums(); //사용자의 3자리 숫자 받기
+  if (userNums === null) return; //사용자가 취소 시 게임 종료
   compareResultArr = compareNums(comNums, userNums); //두 숫자의 각 자리 비교 결과 배열
   giveHint(compareResultArr); //사용자에게 라운드 결과(힌트) 제공
   checkStrike = checkThreeStrike(compareResultArr); //쓰리 스트라이크 여부 확인
