@@ -1,20 +1,19 @@
 //게임 함수
 //1.게임 시작 버튼 클릭 시 game 함수 호출
 function game(nums) {
-  let randNum, comNums, userNums, compareResultArr, checkStrike, checkEnd;
+  let comNums, userNums, compareResultArr, checkStrike, checkEnd;
 
-  randNum = getRandNum(); //2. 난수 생성
   //컴퓨터의 숫자가 없는 경우(첫 라운드인 경우)
   if (!nums) {
-    comNums = getComNums(randNum); //3. 컴퓨터의 3자리 숫자 생성
+    comNums = getComNums(); //2. 컴퓨터의 3자리 숫자 생성
   } else comNums = nums; // 첫 라운드가 아닌 경우 기존 숫자
-  userNums = getUserNums(); //4. 사용자의 3자리 숫자 받기
+  userNums = getUserNums(); //3. 사용자의 3자리 숫자 받기
   if (userNums === null) return; //사용자가 취소 시 게임 종료
-  compareResultArr = compareNums(comNums, userNums); //5. 두 숫자의 각 자리 비교 결과 배열
-  giveHint(compareResultArr); //6. 사용자에게 라운드 결과(힌트) 제공
-  checkStrike = checkThreeStrike(compareResultArr); //7. 쓰리 스트라이크 여부 확인
-  checkEnd = checkGame(comNums, checkStrike); //8. 게임 결과에 따라 종료 또는 재시작
-  //9. 게임 종료 시 새로 시작 여부 묻기
+  compareResultArr = compareNums(comNums, userNums); //4. 두 숫자의 각 자리 비교 결과 배열
+  giveHint(compareResultArr); //5. 사용자에게 라운드 결과(힌트) 제공
+  checkStrike = checkThreeStrike(compareResultArr); //6. 쓰리 스트라이크 여부 확인
+  checkEnd = checkGame(comNums, checkStrike); //7. 게임 결과에 따라 종료 또는 재시작
+  //8. 게임 종료 시 새로 시작 여부 묻기
   if (checkEnd) {
     answerRestart();
   }
@@ -31,9 +30,10 @@ function getRandNum() {
 }
 
 //서로 다른 세 자리 숫자 생성 함수
-function getComNums(num) {
+function getComNums() {
   let comNums,
-    comNumArr = []; //상대방(컴퓨터)의 숫자, 숫자 생성용 배열
+    comNumArr = [], //상대방(컴퓨터)의 숫자, 숫자 생성용 배열
+    num = getRandNum();
 
   for (let i = 0; i < 3; i++) {
     do {
