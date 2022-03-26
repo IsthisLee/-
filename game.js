@@ -1,15 +1,19 @@
 //게임 함수
-function game() {
-  let randNum, comNums, userNums, compareResultArr, checkEnd;
+function game(nums) {
+  let randNum, comNums, userNums, compareResultArr, checkStrike, checkEnd;
 
   randNum = getRandNum(); //난수 생성
-  comNums = getComNums(randNum); //컴퓨터의 3자리 숫자 생성
+  //컴퓨터의 숫자가 없는 경우(첫 라운드인 경우)
+  if (!nums) {
+    comNums = getComNums(randNum); //컴퓨터의 3자리 숫자 생성
+  } else comNums = nums; // 첫 라운드가 아닌 경우 기존 숫자
   userNums = getUserNums(); //사용자의 3자리 숫자 받기
   compareResultArr = compareNums(comNums, userNums); //두 숫자의 각 자리 비교 결과 배열
   giveHint(compareResultArr); //사용자에게 라운드 결과(힌트) 제공
-  checkEnd = checkThreeStrike(dataArr); //쓰리 스트라이크 여부 확인
+  checkStrike = checkThreeStrike(compareResultArr); //쓰리 스트라이크 여부 확인
+  checkEnd = checkGame(comNums, checkStrike); //게임 결과에 따라 종료 또는 재시작
 
-  console.log(comNums, userNums, compareResultArr);
+  console.log(comNums, userNums, compareResultArr, checkStrike);
 }
 
 //1~9 난수 생성 함수
@@ -121,4 +125,13 @@ function checkThreeStrike(dataArr) {
   if (strikeCnt === 3) {
     return (clear = true);
   }
+}
+
+//결과에 따라 종료 또는 재시작하는 함수
+function checkGame(comNums, checkResult) {
+  //쓰리 스트라이크 여부에 따라 종료 또는 재시작
+  if (checkResult) {
+    alert("3개의 숫자를 모두 맞히셨습니다! 게임 종료");
+    return true;
+  } else game(comNums); //재시작 시 기존 컴퓨터 숫자 가지고 시작
 }
