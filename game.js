@@ -52,9 +52,16 @@ function getUserNums() {
 
   do {
     userNums = prompt("숫자를 입력해주세요");
-    if (userNums === null) return userNums; //사용자가 입력 창 취소 시 null 들어옴.
-    if (userNums.length !== 3) alert("3자리 숫자를 입력해주세요!");
-  } while (userNums.length !== 3);
+    //사용자가 입력 창 취소 시 null 들어옴.
+    if (userNums === null) {
+      return userNums;
+    } //숫자를 입력하지 않은 경우
+    else if (isNaN(Number(userNums))) {
+      userNums = null;
+      alert("숫자만 입력 가능합니다!");
+    } //3자리 숫자가 아닌 경우
+    else if (userNums.length !== 3) alert("3자리 숫자를 입력해주세요!");
+  } while (userNums === null || userNums.length !== 3);
   console.log("사용자의 숫자 : ", userNums, typeof userNums);
   return userNums;
 }
