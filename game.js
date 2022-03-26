@@ -6,6 +6,7 @@ function game() {
   comNums = getComNums(randNum); //컴퓨터의 3자리 숫자 생성
   userNums = getUserNums(); //사용자의 3자리 숫자 받기
   compareResultArr = compareNums(comNums, userNums); //두 숫자의 각 자리 비교 결과 배열
+  giveHint(compareResultArr); //사용자에게 라운드 결과(힌트) 제공
 
   console.log(comNums, userNums, compareResultArr);
 }
@@ -83,4 +84,25 @@ function compareNums(standardNums, targetNums) {
   }
   console.log("비교 결과 : ", result);
   return result;
+}
+
+//사용자에게 라운드 결과(힌트) 제공 함수
+function giveHint(dataArr) {
+  let strike = 0,
+    ball = 0;
+
+  for (let i = 0; i < dataArr.length; i++) {
+    if (dataArr[i] === "스트라이크") {
+      strike++;
+    } else if (dataArr[i] === "볼") {
+      ball++;
+    }
+  }
+  if (strike && ball) {
+    alert(`${strike} 스트라이크 ${ball} 볼`);
+  } else if (strike) {
+    alert(`${strike} 스트라이크`);
+  } else if (ball) {
+    alert(`${ball} 볼`);
+  } else alert("낫싱");
 }
