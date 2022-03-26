@@ -1,12 +1,13 @@
 //게임 함수
 function game() {
-  let randNum, comNums, userNums, compareResultArr;
+  let randNum, comNums, userNums, compareResultArr, checkEnd;
 
   randNum = getRandNum(); //난수 생성
   comNums = getComNums(randNum); //컴퓨터의 3자리 숫자 생성
   userNums = getUserNums(); //사용자의 3자리 숫자 받기
   compareResultArr = compareNums(comNums, userNums); //두 숫자의 각 자리 비교 결과 배열
   giveHint(compareResultArr); //사용자에게 라운드 결과(힌트) 제공
+  checkEnd = checkThreeStrike(dataArr); //쓰리 스트라이크 여부 확인
 
   console.log(comNums, userNums, compareResultArr);
 }
@@ -105,4 +106,19 @@ function giveHint(dataArr) {
   } else if (ball) {
     alert(`${ball} 볼`);
   } else alert("낫싱");
+}
+
+//쓰리 스트라이크 여부 확인 함수
+function checkThreeStrike(dataArr) {
+  let clear = false,
+    strikeCnt = 0;
+
+  for (let i = 0; i < dataArr.length; i++) {
+    if (dataArr[i] === "스트라이크") {
+      strikeCnt++;
+    }
+  }
+  if (strikeCnt === 3) {
+    return (clear = true);
+  }
 }
