@@ -1,21 +1,72 @@
-//게임 함수
-//1.게임 시작 버튼 클릭 시 game 함수 호출
-function game(nums) {
-  let comNums, userNums, compareResultArr, checkStrike, checkEnd;
+let comNums;
+let inputNums = document.querySelector("#gameInput");
+let restartInputNum = document.querySelector("#restartInput");
 
-  //컴퓨터의 숫자가 없는 경우(첫 라운드인 경우)
-  if (!nums) {
-    comNums = getComNums(); //2. 컴퓨터의 3자리 숫자 생성
-  } else comNums = nums; // 첫 라운드가 아닌 경우 기존 숫자
-  userNums = getUserNums(); //3. 사용자의 3자리 숫자 받기
-  if (userNums === null) return; //사용자가 취소 시 게임 종료
-  compareResultArr = compareNums(comNums, userNums); //4. 두 숫자의 각 자리 비교 결과 배열
-  giveHint(compareResultArr); //5. 사용자에게 라운드 결과(힌트) 제공
-  checkStrike = checkThreeStrike(compareResultArr); //6. 쓰리 스트라이크 여부 확인
-  checkEnd = checkGame(comNums, checkStrike); //7. 게임 결과에 따라 종료 또는 재시작
-  //8. 게임 종료 시 새로 시작 여부 묻기
+//게임 시작 버튼 클릭 시
+function startGame() {
+  comNums = getComNums(); //컴퓨터의 3자리 숫자 생성
+  //버튼 숨기기, 게임 input 버튼 나타내기
+  document.querySelector("#startButton").style.display = "none";
+  document.querySelector("#gameInput").style.display = "block";
+}
+
+//숫자 입력 받을 시
+function enter() {
+  let compareResultArr, checkStrike, checkEnd;
+  let userNums = inputNums.value;
+  //엔터 입력인지 확인
+  if (!checkEnter()) {
+    return;
+  }
+  //입력받은 숫자 검증
+  if (!checkUserNums(userNums)) {
+    return;
+  }
+  //두 숫자의 각 자리 비교
+  compareResultArr = compareNums(comNums, userNums);
+  //사용자에게 라운드 결과(힌트) 제공
+  giveHint(compareResultArr);
+  //쓰리 스트라이크 여부 확인
+  checkStrike = checkThreeStrike(compareResultArr);
+  //게임 결과에 따라 종료 또는 재시작
+  checkEnd = checkGame(comNums, checkStrike);
+  //게임 종료 시 input창 변경(재시작 여부 묻는 input창)
   if (checkEnd) {
-    answerRestart();
+    document.querySelector("#gameInput").style.display = "none";
+    document.querySelector("#restartInput").style.display = "block";
+  }
+  inputNums.value = null;
+}
+
+function restart() {
+  //엔터 입력인지 확인
+  if (!checkEnter()) {
+    return;
+  }
+  answerRestart();
+}
+
+//엔터 입력인지 확인하는 함수
+function checkEnter() {
+  if (event.keyCode === 13) {
+    return true;
+  }
+}
+
+//입력 받은 숫자 검증 함수
+function checkUserNums(nums) {
+  console.log("사용자의 숫자 : ", nums, typeof nums);
+  if (isNaN(Number(nums))) {
+    document.getElementById("explainResult").innerHTML =
+      "숫자만 입력 가능합니다!";
+    return false;
+  } //3자리 숫자가 아닌 경우
+  else if (nums.length !== 3) {
+    document.getElementById("explainResult").innerHTML =
+      "3자리 숫자를 입력해주세요!";
+    return false;
+  } else {
+    return true;
   }
 }
 
@@ -58,9 +109,12 @@ function getUserNums() {
     } //숫자를 입력하지 않은 경우
     else if (isNaN(Number(userNums))) {
       userNums = null;
-      alert("숫자만 입력 가능합니다!");
+      document.getElementById("explainResult").innerHTML =
+        "숫자만 입력 가능합니다!";
     } //3자리 숫자가 아닌 경우
-    else if (userNums.length !== 3) alert("3자리 숫자를 입력해주세요!");
+    else if (userNums.length !== 3)
+      document.getElementById("explainResult").innerHTML =
+        "3자리 숫자를 입력해주세요!";
   } while (userNums === null || userNums.length !== 3);
   console.log("사용자의 숫자 : ", userNums, typeof userNums);
   return userNums;
@@ -115,12 +169,14 @@ function giveHint(dataArr) {
     }
   }
   if (strike && ball) {
-    alert(`${strike} 스트라이크 ${ball} 볼`);
+    document.getElementById(
+      "explainResult"
+    ).innerHTML = `${strike} 스트라이크 ${ball} 볼`;
   } else if (strike) {
-    alert(`${strike} 스트라이크`);
+    document.getElementById("explainResult").innerHTML = `${strike} 스트라이크`;
   } else if (ball) {
-    alert(`${ball} 볼`);
-  } else alert("낫싱");
+    document.getElementById("explainResult").innerHTML = `${ball} 볼`;
+  } else document.getElementById("explainResult").innerHTML = "낫싱";
 }
 
 //쓰리 스트라이크 여부 확인 함수
@@ -138,23 +194,41 @@ function checkThreeStrike(dataArr) {
   }
 }
 
-//결과에 따라 종료 또는 재시작하는 함수
+//게임 결과 확인하는 함수
 function checkGame(comNums, checkResult) {
-  //쓰리 스트라이크 여부에 따라 종료 또는 재시작
+  //쓰리 스트라이크 여부 확인
   if (checkResult) {
-    alert("3개의 숫자를 모두 맞히셨습니다! 게임 종료");
+    document.getElementById("explainResult").innerHTML =
+      "정답을 맞추셨습니다 !! 🥳";
+    document.querySelector("#explainResult").style.color = "green";
     return true;
-  } else game(comNums); //재시작 시 기존 컴퓨터 숫자 가지고 시작
+  } else return false;
 }
 
 //새로 시작 여부 묻는 함수
 function answerRestart() {
-  let input;
+  let restartNum = restartInputNum.value;
 
-  input = prompt("게임을 새로 시작하려면 1, 종료하려면 2를 입력하세요.");
-  if (input === "1") {
-    game();
-  } else if (input === "2") {
-    return false;
-  } else answerRestart();
+  if (restartNum === "1") {
+    startGame();
+    //게임 input으로 변경
+    document.querySelector("#restartInput").style.display = "none";
+    document.querySelector("#gameInput").style.display = "block";
+    document.getElementById("explainResult").innerHTML = "";
+    document.querySelector("#explainResult").style.color = "red";
+  } else if (restartNum === "2") {
+    //input창 지우고, 게임 시작 버튼 생성
+    document.querySelector("#restartInput").style.display = "none";
+    document.querySelector("#startButton").style.display = "block";
+    document.getElementById("explainResult").innerHTML = "";
+    document.querySelector("#explainResult").style.color = "red";
+  } else {
+    document.querySelector("#explainResult").style.color = "red";
+    document.getElementById("explainResult").innerHTML =
+      "1 또는 2만 입력 가능합니다.";
+  }
+
+  restartInputNum.value = null;
+
+  return;
 }

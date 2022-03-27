@@ -7,12 +7,44 @@
     <link href="style.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
-    <div>
+    <div class="main-container">
       <header>
         <h1 id="title">⚾️ 숫자 야구 ⚾️</h1>
       </header>
       <div class="container">
-        <button onclick="game()">게임 시작</button>
+        <div class="explain">
+          <h2 class="title">게임 설명</h2>
+          <h3 class="title">컴퓨터의 세 자리 숫자를 맞추는 게임입니다.</h3>
+          <ul>
+            <li>유저가 랜덤한 세 자리 숫자를 입력합니다.</li>
+            <li>입력 시 컴퓨터의 숫자와 비교를 하게 됩니다.</li>
+            <li>
+              같은 수가 같은 자리에 있으면
+              <strong class="strong-span">스트라이크</strong>, <br />다른 자리에
+              있으면 <strong class="strong-span">볼</strong>, <br />같은 수가
+              전혀 없으면 포볼 또는
+              <strong class="strong-span">낫싱</strong>이란 힌트를 줍니다.
+            </li>
+            <li>힌트를 토대로 컴퓨터의 숫자를 맞추시면 됩니다.</li>
+          </ul>
+        </div>
+        <div class="input-container">
+          <div>
+            <input id="gameInput" type="text" onKeypress="enter()" />
+            <input
+              id="restartInput"
+              type="text"
+              placeholder="1 : 재시작 / 2 : 게임 종료"
+              onKeypress="restart()"
+            />
+            <button id="startButton" class="btn" onclick="startGame()">
+              게임 시작
+            </button>
+          </div>
+          <div>
+            <p id="explainResult"></p>
+          </div>
+        </div>
       </div>
     </div>
     <script src="game.js"></script>
