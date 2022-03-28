@@ -89,3 +89,14 @@ input[type="text"] {
 .strong-span {
   color: #a600ff;
 }
+
+.result-board {
+  border: 1px solid black;
+  background-color: #ffd07a;
+  width: auto;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+}

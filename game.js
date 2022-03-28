@@ -1,6 +1,4 @@
 let comNums;
-let inputNums = document.querySelector("#gameInput");
-let restartInputNum = document.querySelector("#restartInput");
 
 //게임 시작 버튼 클릭 시
 function startGame() {
@@ -8,12 +6,16 @@ function startGame() {
   //버튼 숨기기, 게임 input 버튼 나타내기
   document.querySelector("#startButton").style.display = "none";
   document.querySelector("#gameInput").style.display = "block";
+  //게시판 지우기
+  document.querySelector(".result-board").innerHTML = "";
 }
 
 //숫자 입력 받을 시
 function enter() {
   let compareResultArr, checkStrike, checkEnd;
+  let inputNums = document.querySelector("#gameInput");
   let userNums = inputNums.value;
+
   //엔터 입력인지 확인
   if (!checkEnter()) {
     return;
@@ -25,7 +27,7 @@ function enter() {
   //두 숫자의 각 자리 비교
   compareResultArr = compareNums(comNums, userNums);
   //사용자에게 라운드 결과(힌트) 제공
-  giveHint(compareResultArr);
+  giveHint(compareResultArr, userNums);
   //쓰리 스트라이크 여부 확인
   checkStrike = checkThreeStrike(compareResultArr);
   //게임 결과에 따라 종료 또는 재시작
@@ -157,7 +159,7 @@ function compareNums(standardNums, targetNums) {
 }
 
 //사용자에게 라운드 결과(힌트) 제공 함수
-function giveHint(dataArr) {
+function giveHint(dataArr, nums) {
   let strike = 0,
     ball = 0;
 
@@ -169,14 +171,28 @@ function giveHint(dataArr) {
     }
   }
   if (strike && ball) {
-    document.getElementById(
-      "explainResult"
+    document.querySelector(
+      "#explainResult"
     ).innerHTML = `${strike} 스트라이크 ${ball} 볼`;
+    document.querySelector(
+      ".result-board"
+    ).innerHTML += `<span>&nbsp${nums} ${strike}S ${ball}B /</span>`;
   } else if (strike) {
-    document.getElementById("explainResult").innerHTML = `${strike} 스트라이크`;
+    document.querySelector("#explainResult").innerHTML = `${strike} 스트라이크`;
+    document.querySelector(
+      ".result-board"
+    ).innerHTML += `<span>&nbsp${nums} ${strike}S ${ball}B /</span>`;
   } else if (ball) {
-    document.getElementById("explainResult").innerHTML = `${ball} 볼`;
-  } else document.getElementById("explainResult").innerHTML = "낫싱";
+    document.querySelector("#explainResult").innerHTML = `${ball} 볼`;
+    document.querySelector(
+      ".result-board"
+    ).innerHTML += `<span>&nbsp${nums} ${strike}S ${ball}B /</span>`;
+  } else {
+    document.querySelector("#explainResult").innerHTML = "낫싱";
+    document.querySelector(
+      ".result-board"
+    ).innerHTML += `<span>&nbsp${nums} 낫싱 /</span>`;
+  }
 }
 
 //쓰리 스트라이크 여부 확인 함수
@@ -198,7 +214,7 @@ function checkThreeStrike(dataArr) {
 function checkGame(comNums, checkResult) {
   //쓰리 스트라이크 여부 확인
   if (checkResult) {
-    document.getElementById("explainResult").innerHTML =
+    document.querySelector("#explainResult").innerHTML =
       "정답을 맞추셨습니다 !! 🥳";
     document.querySelector("#explainResult").style.color = "green";
     return true;
@@ -207,6 +223,7 @@ function checkGame(comNums, checkResult) {
 
 //새로 시작 여부 묻는 함수
 function answerRestart() {
+  let restartInputNum = document.querySelector("#restartInput");
   let restartNum = restartInputNum.value;
 
   if (restartNum === "1") {
@@ -229,6 +246,7 @@ function answerRestart() {
   }
 
   restartInputNum.value = null;
+  document.querySelector(".result-board").innerHTML = "라운드 결과 기록 게시판";
 
   return;
 }
