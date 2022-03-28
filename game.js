@@ -239,6 +239,8 @@ function answerRestart() {
     document.querySelector("#startButton").style.display = "block";
     document.getElementById("explainResult").innerHTML = "";
     document.querySelector("#explainResult").style.color = "red";
+    document.querySelector(".result-board").innerHTML =
+      "라운드 결과 기록 게시판";
   } else {
     document.querySelector("#explainResult").style.color = "red";
     document.getElementById("explainResult").innerHTML =
@@ -246,7 +248,6 @@ function answerRestart() {
   }
 
   restartInputNum.value = null;
-  document.querySelector(".result-board").innerHTML = "라운드 결과 기록 게시판";
 
   return;
 }
